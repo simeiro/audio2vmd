@@ -465,13 +465,11 @@ class Audio2VMDGui:
 
     def run_audio2vmd_extras(self, mode, input_file, output_file, target_file=None):
         activate_cmd = str(Path("venv") / "Scripts" / "activate.bat")
-        python_cmd = "python"
+        python_cmd = "python3"
         audio2vmd_script = AUDIO2VMD_FILENAME
 
         cmd = [
-            "cmd", "/c",
-            "call", activate_cmd, "&&",
-            python_cmd,
+            python_cmd, # "python3" に変更した変数
             audio2vmd_script,
             str(Path(input_file)),
             "--extras-mode", mode
@@ -498,7 +496,7 @@ class Audio2VMDGui:
             text=True,
             bufsize=1,
             universal_newlines=True,
-            creationflags=subprocess.CREATE_NO_WINDOW  # This flag prevents the CMD window from appearing
+            # creationflags=subprocess.CREATE_NO_WINDOW  # This flag prevents the CMD window from appearing
         )
         self.processing = True
         self.master.after(100, self.check_extras_queue)
@@ -614,7 +612,7 @@ class Audio2VMDGui:
 
     def process_files(self, input_files, output_dir, send_lips_data_to):
         activate_cmd = str(Path("venv") / "Scripts" / "activate.bat")
-        python_cmd = "python"
+        python_cmd = "python3"
         audio2vmd_script = AUDIO2VMD_FILENAME
 
         start_time = time.time()
@@ -624,14 +622,12 @@ class Audio2VMDGui:
                 break
 
             cmd = [
-                "cmd", "/c",
-                "call", activate_cmd, "&&",
-                python_cmd,
-                audio2vmd_script,
-                str(Path(file)),
-                "--output", str(Path(output_dir)),
-                "--show-final-complete-message", "False"
-            ]
+            python_cmd,
+            audio2vmd_script,
+            str(Path(file)),
+            "--output", str(Path(output_dir)),
+            "--show-final-complete-message", "False"
+        ]
 
             if send_lips_data_to:
                 cmd.extend(["--send-lips-data-to", str(Path(send_lips_data_to))])
@@ -648,7 +644,7 @@ class Audio2VMDGui:
                     universal_newlines=True,
                     encoding='utf-8',
                     errors='replace',
-                    creationflags=subprocess.CREATE_NO_WINDOW
+                    # creationflags=subprocess.CREATE_NO_WINDOW
                 )
 
                 while self.process:
